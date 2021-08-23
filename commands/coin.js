@@ -2,7 +2,7 @@ const { RichEmbed } = require("discord.js");
 
 module.exports = {
     name: "coin",
-    aliases: ["flip", "hnt"],
+    aliases: ["flip"],
     execute(message, args) {
         const result = Math.random();
         message.edit(new RichEmbed({

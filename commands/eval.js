@@ -1,23 +1,16 @@
-const { RichEmbed } = require("discord.js")
+const Messages = require("../core/Messages");
 
 module.exports = {
     name: "eval",
-    aliases: ["execute", "run"],
+    args: true,
+    aliases: ["execute"],
     execute(message, args) {
         const code = args.join(" ");
         try {
             const out = eval(code);
-            message.edit(new RichEmbed({
-                color: parseInt("3af06a", 16),
-                title: `Completed!`,
-                description: `${out ? out.toString() : "`No out ¯\\_(ツ)_/¯`"}`
-            })).then(message => setTimeout(_=>{message.delete().catch()}, 2000)).catch();
+            Messages.completed(message, "Completed!", {description: `${out ? out.toString() : "`No out ¯\\_(ツ)_/¯`"}`, timeout: 2000});
         } catch (e) {
-            message.edit(new RichEmbed({
-                color: parseInt("eb0c0c", 16),
-                title: `Error in eval!`,
-                description: `\`\`\`${e}\`\`\``
-            })).then(message => setTimeout(_=>{message.delete().catch()}, 2000)).catch();
+            Messages.error(message, "Error in eval!", {description: `\`\`\`${e}\`\`\``, timeout: 2000});
         }
     }
 }

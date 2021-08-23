@@ -1,7 +1,9 @@
 const fs = require("fs");
-const {Client, Collection, RichEmbed} = require("discord.js");
+const {Client, Collection} = require("discord.js");
 const {token, prefix, others} = require("./config.json") ;
-const client = new Client();
+const client = new Client({ ws:{properties: {$browser: process.argv[2] == "mobile" ? "Discord iOS" : "Desktop"}}});
+
+const Messages = global.Messages = require("./core/Messages.js");
 
 client.commands = new Collection();
 for (const file of fs.readdirSync(`./commands`)) {
@@ -19,43 +21,31 @@ client.on("disconnect", _ => console.log("Looks like connection to WebSocket was
 client.on("reconnecting", _ => console.log("Im reconnecting to WebSocket now..."));
 client.on("resume", _ => console.log("Reconnected to WebSocket!"));
 
-client.once("ready", () => {
+client.once("ready", _ => {
   console.log(`Logged in as ${client.user.tag}!`);
+  //client.user.setActivity("JS Development", {type: "STREAMING",url: "https://www.twitch.tv/pornhub"});
 });
 
 client.on("message", async message => {
     if (message.author != client.user && !others.includes(message.author.id)) return;
     if (!message.content.startsWith(prefix)) return;
-    if (message.content.length > (1800+prefix.length)) return message.edit(new RichEmbed(
-        {
-            color: parseInt("eb0c0c", 16),
-            title: `Too much!`,
-        }
-    )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch();
+    if (message.content.length > (1800+prefix.length)) return Messages.error(message, "Too much!", {timeout: 1000})
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandString = args.shift().toLowerCase().replace(/\ /g,"");
     if (commandString.length == 0) return;
-    const command = client.commands.get(commandString) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandString)) || client.commands.find(cmd => cmd.name.startsWith(commandString))/* || client.commands.find(cmd => cmd.aliases && cmd.aliases.find(a => a.startsWith(commandString)))*/;
-    if (!command) return message.edit(new RichEmbed(
-        {
-            color: parseInt("eb0c0c", 16),
-            title: `Command not found!`,
-        }
-    )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch();
+    const command = client.commands.find(cmd => cmd.name.includes(commandString)) || client.commands.find(cmd => cmd.aliases && cmd.aliases.find(a => a.includes(commandString)));
+    if (!command) return Messages.error(message, "Command not found!", {timeout: 1000});
+    
+    if(args.length == 0 && command.args) return Messages.warning(message, "Arguments required!", {timeout: 1000})
 
     try {
-        console.log(`Executing ${command.name}!`);
+        //console.log(`Executing ${command.name}!`);
         await command.execute(message, args);
     } catch(e) {
         console.error(e);
-        return message.edit(new RichEmbed(
-            {
-                color: parseInt("eb0c0c", 16),
-                title: `Error in command!`,
-                description: `\`\`\`${e}\`\`\``
-            }
-        )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch()};
+        return Messages.error(message, "Error in command!", {description:`\`\`\`${e}\`\`\``, timeout: 1000});
+    }
 });
 
 client.login(token);

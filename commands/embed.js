@@ -1,11 +1,9 @@
-const { RichEmbed } = require("discord.js")
+const Messages = require("../core/Messages");
 
 module.exports = {
     name: "embed",
+    args: true,
     execute(message, args) {
-        message.edit(new RichEmbed({
-            color: parseInt("5926ff", 16),
-            title: args.join(" "),
-        })).catch();
+        Messages.regular(message, args.join(" "), {big:true});
     }
 }
