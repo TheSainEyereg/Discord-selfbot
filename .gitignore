@@ -74,3 +74,6 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+/config.json
+!node_modules/discord.js/src/client/ClientDataManager.js

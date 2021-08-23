@@ -1,0 +1,30 @@
+{
+  "name": "discord-selfbot",
+  "version": "1.0.0",
+  "description": "My selfbot XD",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheSainEyereg/Discord-selfbot.git",
+    "raw": "https://github.com/TheSainEyereg/Discord-selfbot"
+  },
+  "keywords": [
+    "selfbot",
+    "discord",
+    "olejka",
+    "djs",
+    "djs11"
+  ],
+  "author": "Olejka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheSainEyereg/Discord-selfbot/issues"
+  },
+  "homepage": "https://github.com/TheSainEyereg/Discord-selfbot#readme",
+  "dependencies": {
+    "discord.js": "^11.6.4"
+  }
+}
