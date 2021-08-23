@@ -8,7 +8,7 @@ module.exports = {
         const code = args.join(" ");
         try {
             const out = eval(code);
-            Messages.completed(message, "Completed!", {description: `${out ? out.toString() : "`No out ¯\\_(ツ)_/¯`"}`, timeout: 2000});
+            Messages.completed(message, "Completed!", {description: `${out ? `\`\`\`${out.toString()}\`\`\`` : "`No out ¯\\_(ツ)_/¯`"}`, timeout: 2000});
         } catch (e) {
             Messages.error(message, "Error in eval!", {description: `\`\`\`${e}\`\`\``, timeout: 2000});
         }
