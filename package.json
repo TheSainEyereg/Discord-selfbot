@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/TheSainEyereg/Discord-selfbot#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "discord.js": "^11.6.4"
   }
 }
