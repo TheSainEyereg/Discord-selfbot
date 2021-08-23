@@ -11,13 +11,13 @@ module.exports = {
                 color: parseInt("3af06a", 16),
                 title: `Completed!`,
                 description: `${out ? out.toString() : "`No out ¯\\_(ツ)_/¯`"}`
-            })).then(message => setTimeout(_=>{message.delete().error()}, 2000)).error();
+            })).then(message => setTimeout(_=>{message.delete().catch()}, 2000)).catch();
         } catch (e) {
             message.edit(new RichEmbed({
                 color: parseInt("eb0c0c", 16),
                 title: `Error in eval!`,
                 description: `\`\`\`${e}\`\`\``
-            })).then(message => setTimeout(_=>{message.delete().error()}, 2000)).error();
+            })).then(message => setTimeout(_=>{message.delete().catch()}, 2000)).catch();
         }
     }
 }

@@ -10,12 +10,12 @@ module.exports = {
                 color: parseInt("eb0c0c", 16),
                 title: `Nothing to type!`,
             }
-        )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error();
+        )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch();
         const text = args.join(" ");
         let out="";
         for (const char of text) {
             out+=char;
-            message.edit(out).error();
+            message.edit(out).catch();
             await delay(1200);
         }
     }

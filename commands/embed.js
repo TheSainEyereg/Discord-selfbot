@@ -6,6 +6,6 @@ module.exports = {
         message.edit(new RichEmbed({
             color: parseInt("5926ff", 16),
             title: args.join(" "),
-        })).error();
+        })).catch();
     }
 }

@@ -31,7 +31,7 @@ client.on("message", async message => {
             color: parseInt("eb0c0c", 16),
             title: `Too much!`,
         }
-    )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error();
+    )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch();
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandString = args.shift().toLowerCase().replace(/\ /g,"");
@@ -42,7 +42,7 @@ client.on("message", async message => {
             color: parseInt("eb0c0c", 16),
             title: `Command not found!`,
         }
-    )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error();
+    )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch();
 
     try {
         console.log(`Executing ${command.name}!`);
@@ -55,7 +55,7 @@ client.on("message", async message => {
                 title: `Error in command!`,
                 description: `\`\`\`${e}\`\`\``
             }
-        )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error()};
+        )).then(m => setTimeout(_=>{m.delete().catch()}, 1000)).catch()};
 });
 
 client.login(token);

@@ -13,6 +13,6 @@ module.exports = {
                 text: "P.s. use at your own risk :)",
                 icon_url: "https://cdn.discordapp.com/avatars/388353045500657674/1f6adf045fd1d8e5241075f0da3569eb.webp?size=128"
             }
-        })).error();
+        })).catch();
     }
 }
