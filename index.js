@@ -1,5 +1,5 @@
 const fs = require("fs");
-const {Client, Collection} = require("discord.js");
+const {Client, Collection, RichEmbed} = require("discord.js");
 const {token, prefix, others} = require("./config.json") ;
 const client = new Client();
 
@@ -26,18 +26,36 @@ client.once("ready", () => {
 client.on("message", async message => {
     if (message.author != client.user && !others.includes(message.author.id)) return;
     if (!message.content.startsWith(prefix)) return;
-    if (message.content.length > (1800+prefix.length)) return console.warn("Too much!");
+    if (message.content.length > (1800+prefix.length)) return message.edit(new RichEmbed(
+        {
+            color: parseInt("eb0c0c", 16),
+            title: `Too much!`,
+        }
+    )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error();
 
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandString = args.shift().toLowerCase().replace(/\ /g,"");
     if (commandString.length == 0) return;
-    const command = client.commands.get(commandString) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandString)) || client.commands.find(cmd => cmd.name.startsWith(commandString));
-    if (!command) return console.warn("Command not found!");
+    const command = client.commands.get(commandString) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandString)) || client.commands.find(cmd => cmd.name.startsWith(commandString))/* || client.commands.find(cmd => cmd.aliases && cmd.aliases.find(a => a.startsWith(commandString)))*/;
+    if (!command) return message.edit(new RichEmbed(
+        {
+            color: parseInt("eb0c0c", 16),
+            title: `Command not found!`,
+        }
+    )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error();
 
     try {
         console.log(`Executing ${command.name}!`);
         await command.execute(message, args);
-    } catch(e) {console.error(e)};
+    } catch(e) {
+        console.error(e);
+        return message.edit(new RichEmbed(
+            {
+                color: parseInt("eb0c0c", 16),
+                title: `Error in command!`,
+                description: `\`\`\`${e}\`\`\``
+            }
+        )).then(m => setTimeout(_=>{m.delete().error()}, 1000)).error()};
 });
 
 client.login(token);
