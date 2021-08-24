@@ -11,6 +11,12 @@ for (const file of fs.readdirSync(`./commands`)) {
     client.commands.set(command.name, command);
 }
 
+client.integrations = new Collection();
+for (const file of fs.readdirSync(`./integrations`)) {
+    const integration = require(`./integrations/${file}`);
+    client.integrations.set(file.split(".")[0], integration);
+}
+
 process.on("unhandledRejection", e => console.error(e));
 
 client.on("error", e => console.error(`Another error: ${e}`));
@@ -28,7 +34,12 @@ client.once("ready", _ => {
 
 client.on("message", async message => {
     if (message.author != client.user && !others.includes(message.author.id)) return;
-    if (!message.content.startsWith(prefix)) return;
+    if (!message.content.startsWith(prefix)) {
+        if (message.attachments.size != 0) return;
+        const integration = client.integrations.find(int => message.content.match(int.regexp));
+        if (!integration) return;
+        return integration.execute(message);
+    };
     if (message.content.length > (1800+prefix.length)) return Messages.error(message, "Too much!", {timeout: 1000})
 
     const args = message.content.slice(prefix.length).split(/ +/);

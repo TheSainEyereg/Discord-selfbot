@@ -32,9 +32,10 @@ module.exports = {
                 const url = res.data.file_versions.share.default;
                 const link = `https://coub.com/view/${res.data.permalink}`;
                 if (!url || !link) return Messages.error(message, "Error in getting video!", {timeout: 1000});
-                message.channel.send(`<${link}>`, new Attachment(url,"coub.mp4"));
-                message.channel.stopTyping();
-                message.delete().catch();
+                message.channel.send(`<${link}>`, new Attachment(url,"coub.mp4")).then(_=>{
+                    message.channel.stopTyping();
+                    message.delete().catch();
+                }).catch();
             })
             .catch(e => {
                 return Messages.error(message, "Error in fetching coub info!", {discription: `\`\`\`${e}\`\`\``, timeout: 1000});
