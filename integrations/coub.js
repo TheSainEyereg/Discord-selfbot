@@ -2,9 +2,9 @@ const axios = require('axios');
 const { Attachment } = require('discord.js');
 
 module.exports = {
-    gerexp: /^(https?:\/\/)?coub\.com\/view\//gi,
+    regexp: /^(https?:\/\/)?coub\.com\/view\//gi,
     execute(message) {
-        const coub = message.content.split(message.content.match(this.gerexp)[0])[1].replace("/", "");
+        const coub = message.content.split(message.content.match(this.regexp)[0])[1].replace("/", "");
         axios.get(`https://coub.com/api/v2/coubs/${coub}`)
         .then(res => {
             const url = res.data.file_versions.share.default;
