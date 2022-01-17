@@ -1,7 +1,7 @@
 const fs = require("fs");
 const {Client, Collection} = require("discord.js");
 const {token, prefix, others} = require("./config.json") ;
-const client = new Client({ ws:{properties: {$browser: process.argv[2] == "mobile" ? "Discord iOS" : "Desktop"}}});
+const client = new Client({ ws:{properties: {$browser: "Desktop"}}});
 
 const Messages = global.Messages = require("./core/Messages.js");
 
