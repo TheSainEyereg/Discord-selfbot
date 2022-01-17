@@ -51,7 +51,6 @@ client.on("message", async message => {
 	if(args.length == 0 && command.args) return Messages.warning(message, "Arguments required!", {timeout: 1000})
 
 	try {
-		//console.log(`Executing ${command.name}!`);
 		await command.execute(message, args);
 	} catch(e) {
 		console.error(e);
