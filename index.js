@@ -45,7 +45,7 @@ client.on("message", async message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandString = args.shift().toLowerCase().replace(/\ /g,"");
     if (commandString.length == 0) return;
-    const command = client.commands.find(cmd => cmd.name.includes(commandString)) || client.commands.find(cmd => cmd.aliases && cmd.aliases.find(a => a.includes(commandString)));
+    const command = client.commands.find(cmd => cmd.name.startsWith(commandString)) || client.commands.find(cmd => cmd.aliases && cmd.aliases.find(a => a.startsWith(commandString)));
     if (!command) return Messages.error(message, "Command not found!", {timeout: 1000});
     
     if(args.length == 0 && command.args) return Messages.warning(message, "Arguments required!", {timeout: 1000})
