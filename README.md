@@ -13,9 +13,9 @@ npm i
 4. Create `config.json` like this: 
 ```json
 {
-    "token": "YourAccountToken",
-    "prefix": ">",
-    "others": ["ID", "ID", "..."]
+	"token": "YourAccountToken",
+	"prefix": ">",
+	"others": ["ID", "ID", "..."]
 }
 ```
 _p.s. "others" is another users who can use YOU_
