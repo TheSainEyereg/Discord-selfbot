@@ -29,6 +29,7 @@ client.on("resume", _ => console.log("Reconnected to WebSocket!"));
 
 client.once("ready", _ => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setPresence({status: 'invisible'});
   //client.user.setActivity("JS Development", {type: "STREAMING",url: "https://www.twitch.tv/pornhub"});
 });
 
