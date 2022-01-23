@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const MessageEmbed = require("../core/MessageEmbed");
 const Messages = require("../core/Messages");
 
 module.exports = {
@@ -6,12 +6,10 @@ module.exports = {
 	args: true,
 	aliases: ["hex"],
 	execute(message, args) {
-		const string = args[0].slice(1);
-		const color = parseInt(args[0]) || (string.length === 6 ? parseInt(string, 16) : parseInt(string.split("").map(v => v+v).join(""), 16));
-		if (!color || color>16777215) return Messages.warning(message, "That is not a color!", {timeout: 1000});
-		message.edit(new RichEmbed({
-			color: color,
+		if (!args[0].match(/^#(?:[0-9a-fA-F]{3}){1,2}$/gi)) return Messages.warning(message, "That is not a color!", {timeout: 2000});
+		message.edit(new MessageEmbed({
+			color: args[0],
 			title: args[0]
-		})).catch();
+		}).uri).catch();
 	}
 }

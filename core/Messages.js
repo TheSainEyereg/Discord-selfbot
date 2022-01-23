@@ -1,32 +1,49 @@
-const { RichEmbed } = require("discord.js");
+const MessageEmbed = require("./MessageEmbed.js");
 
 module.exports = {
-	regular(message, text, opt) {
-		const embed = new RichEmbed().setColor("#5926ff");
-		opt && opt.big ? embed.setTitle(text) : embed.setDescription(text);
-		if (opt && opt.timeout && !opt.callback) setTimeout(_=>{message.delete().catch()}, opt.timeout);
-		if (opt && opt.callback) return opt.callback(embed);
-		message.edit(embed).catch();
+	regular(message, text, options) {
+		const embed = new MessageEmbed().setColor("#5926ff");
+		options?.big ? embed.setTitle(text) : embed.setDescription(text);
+		if (options?.timeout && !options?.callback) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		if (options?.callback) return options.callback(embed.uri);
+		return message.edit(embed.uri).catch();
 	},
-	completed(message, text, opt) {
-		const embed = new RichEmbed().setColor("#3af06a").setTitle(text);
-		if (opt && opt.description) embed.setDescription(opt.description);
-		if (opt && opt.timeout && !opt.callback) setTimeout(_=>{message.delete().catch()}, opt.timeout);
-		if (opt && opt.callback) return opt.callback(embed);
-		message.edit(embed).catch();
+	completed(message, text, options) {
+		const embed = new MessageEmbed().setColor("#3af06a").setTitle(text);
+		if (options?.description) embed.setDescription(options.description);
+		if (options?.timeout && !options?.callback) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		if (options?.callback) return options.callback(embed.uri);
+		return message.edit(embed.uri).catch();
 	},
-	warning(message, text, opt) {
-		const embed = new RichEmbed().setColor("#f0e43a").setTitle(text);
-		if (opt && opt.description) embed.setDescription(opt.description);
-		if (opt && opt.timeout && !opt.callback) setTimeout(_=>{message.delete().catch()}, opt.timeout);
-		if (opt && opt.callback) return opt.callback(embed);
-		message.edit(embed).catch();
+	warning(message, text, options) {
+		const embed = new MessageEmbed().setColor("#f0e43a").setTitle(text);
+		if (options?.description) embed.setDescription(options.description);
+		if (options?.timeout && !options?.callback) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		if (options?.callback) return options.callback(embed.uri);
+		return message.edit(embed.uri).catch();
 	},
-	error(message, text, opt) {
-		const embed = new RichEmbed().setColor("#eb0c0c").setTitle(text);
-		if (opt && opt.description) embed.setDescription(opt.description);
-		if (opt && opt.timeout && !opt.callback) setTimeout(_=>{message.delete().catch()}, opt.timeout);
-		if (opt && opt.callback) return opt.callback(embed);
-		message.edit(embed).catch();
+	error(message, text, options) {
+		const embed = new MessageEmbed().setColor("#eb0c0c").setTitle(text);
+		if (options?.description) embed.setDescription(options.description);
+		if (options?.timeout && !options?.callback) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		if (options?.callback) return options.callback(embed.uri);
+		return message.edit(embed.uri).catch();
+	},
+
+	textRegular(message, text, options) {
+		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		return message.edit(options?.big ? "**"+text+"**" : text).catch();
+	},
+	textCompleted(message, text, options) {
+		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		return message.edit(`${options?.color ? "🟢" : ":white_check_mark:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
+	},
+	textWarning(message, text, options) {
+		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		return message.edit(`${options?.color ? "🟡" : ":warning:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
+	},
+	textError(message, text, options) {
+		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
+		return message.edit(`${options?.color ? "🔴" : ":x:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
 	}
 }

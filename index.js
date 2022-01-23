@@ -41,21 +41,21 @@ client.on("message", async message => {
 		if (!integration) return;
 		return integration.execute(message);
 	};
-	if (message.content.length > (1800+prefix.length)) return Messages.error(message, "Too much!", {timeout: 1000})
+	if (message.content.length > (1800+prefix.length)) return Messages.error(message, "Too much!", {timeout: 2000})
 
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandString = args.shift().toLowerCase().replace(/\ /g,"");
 	if (commandString.length == 0) return;
 	const command = client.commands.find(cmd => cmd.name.startsWith(commandString)) || client.commands.find(cmd => cmd.aliases && cmd.aliases.find(a => a.startsWith(commandString)));
-	if (!command) return Messages.error(message, "Command not found!", {timeout: 1000});
+	if (!command) return Messages.error(message, "Command not found!", {timeout: 2000});
 	
-	if(args.length == 0 && command.args) return Messages.warning(message, "Arguments required!", {timeout: 1000})
+	if(args.length == 0 && command.args) return Messages.warning(message, "Arguments required!", {timeout: 2000})
 
 	try {
 		await command.execute(message, args);
 	} catch(e) {
 		console.error(e);
-		return Messages.error(message, "Error in command!", {description:`\`\`\`${e}\`\`\``, timeout: 1000});
+		return Messages.textError(message, "Error in command!", {description:`\`\`\`${e}\`\`\``, timeout: 2000});
 	}
 });
 
