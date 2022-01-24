@@ -33,7 +33,6 @@ module.exports = {
 			insult = index === this.phases.length - 1 ? this.phases[0] : this.phases[index + 1];
 		}
 		this.last50.push(insult);
-		console.log(this.last50);
 
 		await delay(Math.floor(Math.random() * 2000) + 1000);
 		message.channel.stopTyping();
