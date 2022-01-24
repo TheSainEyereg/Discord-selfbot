@@ -1,4 +1,4 @@
-const MessageEmbed = require("./MessageEmbed.js");
+const MessageEmbed = require("../modules/MessageEmbed.js");
 const axios = require("axios");
 
 function inlineReply(message, content, options) {

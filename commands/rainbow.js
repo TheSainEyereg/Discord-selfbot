@@ -1,4 +1,4 @@
-const MessageEmbed = require("../core/MessageEmbed");
+const MessageEmbed = require("../modules/MessageEmbed");
 const Messages = require("../core/Messages");
 
 module.exports = {

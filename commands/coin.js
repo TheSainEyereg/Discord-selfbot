@@ -1,4 +1,4 @@
-const MessageEmbed = require("../core/MessageEmbed");
+const MessageEmbed = require("../modules/MessageEmbed");
 
 module.exports = {
 	name: "coin",
