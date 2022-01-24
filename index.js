@@ -1,6 +1,6 @@
 const fs = require("fs");
 const {Client, Collection} = require("discord.js");
-const {token, prefix, others} = require("./config.json") ;
+const {token, prefix} = require("./config.json") ;
 const client = new Client({ ws:{properties: {$browser: "Desktop"}}});
 
 const Messages = global.Messages = require("./core/Messages.js");
@@ -17,6 +17,13 @@ for (const file of fs.readdirSync(`./integrations`)) {
 	client.integrations.set(file.split(".")[0], integration);
 }
 
+client.interactions = new Collection();
+client.userInteractions = new Collection();
+for (const file of fs.readdirSync(`./interactions`)) {
+	const interaction = require(`./interactions/${file}`);
+	client.interactions.set(interaction.name, interaction);
+}
+
 process.on("unhandledRejection", e => console.error(e));
 
 client.on("error", e => console.error(`Another error: ${e}`));
@@ -29,18 +36,32 @@ client.on("resume", _ => console.log("Reconnected to WebSocket!"));
 
 client.once("ready", _ => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setPresence({status: 'invisible'});
+  client.user.setPresence({status: "invisible"});
   //client.user.setActivity("JS Development", {type: "STREAMING",url: "https://www.twitch.tv/pornhub"});
 });
 
 client.on("message", async message => {
-	if (message.author != client.user && !others.includes(message.author.id)) return;
+	if (client.userInteractions.has(message.author.id)) {
+		const interactions = client.userInteractions.get(message.author.id);
+		interactions.forEach(async i => {
+			const interaction = client.interactions.get(i);
+			try {
+				interaction.execute(message);
+			} catch (e) {
+				console.error(e);
+			}
+		})
+	}
+
+	if (message.author != client.user) return;
+
 	if (!message.content.startsWith(prefix)) {
 		if (message.attachments.size != 0) return;
 		const integration = client.integrations.find(int => message.content.match(int.regexp));
 		if (!integration) return;
 		return integration.execute(message);
 	};
+
 	if (message.content.length > (1800+prefix.length)) return Messages.error(message, "Too much!", {timeout: 2500})
 
 	const args = message.content.slice(prefix.length).split(/ +/);
