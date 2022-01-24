@@ -8,10 +8,10 @@ module.exports = {
 		const code = args.join(" ");
 		try {
 			const out = eval(code);
-			if (!code.includes("message.edit(") && !code.includes("Messages.")) Messages.textCompleted(message, "Completed!", {description: `${out ? `\`\`\`${out.toString()}\`\`\`` : "`No out ¯\\_(ツ)_/¯`"}`, timeout: 2000});
+			if (!code.includes("message.edit(") && !code.includes("Messages.")) Messages.textCompleted(message, "Completed!", {description: `${out ? `\`\`\`${out.toString()}\`\`\`` : "`No out ¯\\_(ツ)_/¯`"}`, timeout: 2500});
 
 		} catch (e) {
-			Messages.textError(message, "Error in eval!", {description: `\`\`\`${e}\`\`\``, timeout: 2000});
+			Messages.textError(message, "Error in eval!", {description: `\`\`\`${e}\`\`\``, timeout: 2500});
 		}
 	}
 }

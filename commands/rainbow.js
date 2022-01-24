@@ -6,12 +6,11 @@ module.exports = {
 	args: true,
 	aliases: ["awesome", "rgb"],
 	async execute(message, args) {
-		return Messages.warning(message, "Rainbow command issuinng degraded performance due to new Embeds.", {timeout: 5000});
+		//return Messages.warning(message, "Rainbow command issuinng degraded performance due to new Embeds.", {timeout: 5000});
 		const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 		for (let i=0; i<5; i++) {
-			const color = "#"+("000000"+Math.floor(Math.random()*16777215)).slice(-6);
 			message.edit(new MessageEmbed({
-				color: color,
+				color: Math.floor(Math.random()*16777215),
 				title: args.join(" ")
 			}).uri).catch();
 			await delay(3000);

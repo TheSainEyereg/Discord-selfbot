@@ -38,6 +38,18 @@
 	* Generates the URI for the embed
 	*/
 	generateURI() {
+		this.color = (_=>{
+			switch (typeof this.color) {
+				case "string":
+					if (this.color.match(/^#(?:[0-9a-fA-F]{3}){1,2}$/gi)) return this.color.length == 4 ? this.color.replace(/([0-9a-fA-F])/gi, "$1$1") : this.color;
+					break;
+				case "number":
+					if (this.color<=16777215 && this.color>=0) return "#"+this.color.toString(16);
+					break;
+			}
+			return "";
+		})()
+
 		const uri = [];
 		if (this.color) uri.push("color=" + encodeURIComponent(this.color));
 		if (this.title) uri.push("bold=" + encodeURIComponent(this.title));

@@ -9,7 +9,7 @@ module.exports = {
 		.then(res => {
 			const url = res.data.file_versions.share.default;
 			const link = `https://coub.com/view/${res.data.permalink}`;
-			if (!url || !link) return Messages.error(message, "Error in getting video!", {timeout: 2000});
+			if (!url || !link) return Messages.error(message, "Error in getting video!", {timeout: 2500});
 			message.channel.send(`<${link}>`, new Attachment(url,"coub.mp4")).then(_=>{
 				message.channel.stopTyping();
 				message.delete().catch();
@@ -17,7 +17,7 @@ module.exports = {
 		})
 		.catch(e => {
 			console.log(e);
-			return Messages.error(message, "Error in fetching coub info!", {discription: `\`\`\`${e}\`\`\``, timeout: 2000});
+			return Messages.error(message, "Error in fetching coub info!", {discription: `\`\`\`${e}\`\`\``, timeout: 2500});
 		});
 	}
 }
