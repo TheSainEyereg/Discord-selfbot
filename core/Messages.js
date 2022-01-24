@@ -51,15 +51,15 @@ module.exports = {
 	},
 	textCompleted(message, text, options) {
 		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
-		return message.edit(`${options?.color ? "🟢" : ":white_check_mark:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
+		return message.edit(`${options?.color ? ":green_circle:" : ":white_check_mark:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
 	},
 	textWarning(message, text, options) {
 		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
-		return message.edit(`${options?.color ? "🟡" : ":warning:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
+		return message.edit(`${options?.color ? ":yellow_circle:" : ":warning:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
 	},
 	textError(message, text, options) {
 		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
-		return message.edit(`${options?.color ? "🔴" : ":x:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
+		return message.edit(`${options?.color ? ":red_circle:" : ":x:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
 	},
 
 	reply(message, text, options) {
