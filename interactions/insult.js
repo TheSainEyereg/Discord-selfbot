@@ -7,8 +7,10 @@ module.exports = {
 	name: "insult",
 	async execute(message) {
 		const delay = ms => new Promise(res => setTimeout(res, ms));
+		if (this.typing) return;
 
 		message.channel.startTyping();
+		this.typing = true;
 		if (!this.phases) {
 			const formData = new FormData();
 			formData.append("api_option", "show_paste");
@@ -34,8 +36,9 @@ module.exports = {
 		}
 		this.last50.push(insult);
 
-		await delay(Math.floor(Math.random() * 2000) + 1000);
+		await delay(insult.length * Math.floor(Math.random() * 50 + 50));
 		message.channel.stopTyping();
+		this.typing = false;
 		textReply(message, insult);
 	}
 }
