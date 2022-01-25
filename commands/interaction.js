@@ -11,7 +11,7 @@ module.exports = {
 		if (!["add", "remove", "list"].includes(args[1])) return Messages.error(message, "Invalid arguments (add/remove/list)!", {timeout: 2500});
 		if ((!args[2]) && args[0] != "list") return Messages.error(message, "Invalid arguments (INTERACTION_NAME)!", {timeout: 2500});
 		
-		const user = await client.users.find(u => u.id == args[0]);
+		const user = message.mentions.users.first() || message.client.users.find(u => u.id == args[0]);
 		if (!user) return Messages.error(message, "No such user!", {timeout: 2500});
 		if (user.bot) return Messages.error(message, "Bots can't have interactions!", {timeout: 2500});
 
