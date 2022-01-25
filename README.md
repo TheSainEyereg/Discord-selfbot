@@ -15,7 +15,11 @@ npm i
 {
 	"token": "YourAccountToken",
 	"prefix": ">",
-	"others": ["ID", "ID", "..."]
+	"insult": {
+		"pastebin_dev_key": "pastebin_dev_key",
+		"pastebin_user_key": "pastebin_user_key",
+		"pastebin_paste_key": "pastebin_paste_key"
+	}
 }
 ```
 _p.s. "others" is another users who can use YOU_
