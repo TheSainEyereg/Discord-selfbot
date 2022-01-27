@@ -9,6 +9,9 @@
  * @property {string} thumbnail.url - URL of the thumbnail
  * @property {number} thumbnail.width - Width of the thumbnail
  * @property {number} thumbnail.height - Height of the thumbnail
+ * @property {string} image.url - URL of the image
+ * @property {number} image.width - Width of the image
+ * @property {number} image.height - Height of the image
  */
  class MessageEmbed {
 	/**
@@ -30,14 +33,20 @@
 			url: embed.thumbnail?.url,
 			width: embed.thumbnail?.width,
 			height: embed.thumbnail?.height
-		}
+		};
+		this.image = {
+			url: embed.image?.url,
+			width: embed.image?.width,
+			height: embed.image?.height
+		};
 
 		this.generateURI();
 	}
+	
 	/*
-	* Generates the URI for the embed
+	* Checks and prepares properties to be sent to the API
 	*/
-	generateURI() {
+	checkProperties() {
 		this.color = (_=>{
 			switch (typeof this.color) {
 				case "string":
@@ -50,6 +59,15 @@
 			return "";
 		})()
 
+		if (this.thumbnail?.url && this.image?.url) console.warn("[MessageEmbed] You can't set both thumbnail and image, priority will be given to image!");
+	}
+
+	/*
+	* Generates the URI for the embed
+	*/
+	generateURI() {
+		this.checkProperties();
+		
 		const uri = [];
 		if (this.color) uri.push("color=" + encodeURIComponent(this.color));
 		if (this.title) uri.push("bold=" + encodeURIComponent(this.title));
@@ -57,7 +75,10 @@
 		if (this.description) uri.push("description=" + encodeURIComponent(this.description));
 		if (this.author?.text) uri.push("author=" + encodeURIComponent(this.author.text));
 		if (this.author?.url) uri.push("author_url=" + encodeURIComponent(this.author.url));
-		if (this.thumbnail?.url) uri.push("thumbnail=" + encodeURIComponent(this.thumbnail.url));
+		if (this.image?.url || this.thumbnail?.url) uri.push("thumbnail=" + encodeURIComponent(this.image?.url || this.thumbnail?.url));
+		if ((this.image?.url && this.image?.width) || (this.thumbnail?.url && this.thumbnail?.width)) uri.push("thumbnail_width=" + encodeURIComponent(this.image.width || this.thumbnail.width));
+		if ((this.image?.url && this.image?.height) || (this.thumbnail?.url && this.thumbnail?.height)) uri.push("thumbnail_height=" + encodeURIComponent(this.image.height || this.thumbnail.height));
+		if (this.image?.url) uri.push("thumbnail_big=true");
 		this.uri = `||​||`.repeat(200)+"https://api.olejka.ru/v2/discord/embed?" + uri.join("&");
 	}
 
@@ -133,6 +154,21 @@
 	 */
 	setThumbnail(url, width, height) {
 		this.thumbnail = { url, width, height};
+		this.generateURI();
+		return this;
+	}
+
+	/**
+	 * Sets the image of the embed
+	 * @param {string} url - URL of the image
+	 * @param {number} width - Width of the image
+	 * @param {number} height - Height of the image
+	 * @returns {MessageEmbed}
+	 * @memberof MessageEmbed
+	 * @example new MessageEmbed().setImage("https://olejka.ru/s/2c9480c8.png", 1024, 512)
+	 */
+	setImage(url, width, height) {
+		this.image = { url, width, height};
 		this.generateURI();
 		return this;
 	}
