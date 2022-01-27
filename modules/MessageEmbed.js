@@ -58,7 +58,7 @@
 		if (this.author?.text) uri.push("author=" + encodeURIComponent(this.author.text));
 		if (this.author?.url) uri.push("author_url=" + encodeURIComponent(this.author.url));
 		if (this.thumbnail?.url) uri.push("thumbnail=" + encodeURIComponent(this.thumbnail.url));
-		this.uri = `||​||`.repeat(250)+"https://api.olejka.ru/v2/discord/embed?" + uri.join("&");
+		this.uri = `||​||`.repeat(200)+"https://api.olejka.ru/v2/discord/embed?" + uri.join("&");
 	}
 
 	/**
