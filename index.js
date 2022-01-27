@@ -4,6 +4,7 @@ const {token, prefix} = require("./config.json") ;
 const client = new Client({ ws:{properties: {$browser: "Desktop"}}});
 
 const Messages = global.Messages = require("./core/Messages.js");
+const MessageEmbed = global.MessageEmbed = require("./modules/MessageEmbed.js");
 
 client.commands = new Collection();
 for (const file of fs.readdirSync(`./commands`)) {

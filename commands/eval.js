@@ -7,10 +7,12 @@ module.exports = {
 	execute(message, args) {
 		const code = args.join(" ");
 		const isPromise = v => typeof v === "object" && typeof v.then === "function";
+		const dontSend = code.includes("message.channel.send(") || code.includes("message.edit(") || code.includes("message.delete(") || code.includes("Messsages.")
 		try {
 			const evaled = eval(code);
 			if (isPromise(evaled)) {
 				evaled.then(r => {
+					if (dontSend) return;
 					Messages.textCompleted(message, "Promise resolved!", {
 						description: `\`\`\`\n${r}\n\`\`\``,
 						timeout: 2500
@@ -22,6 +24,7 @@ module.exports = {
 					});
 				});
 			} else {
+				if (dontSend) return;
 				Messages.textCompleted(message, "Eval successful!", {
 					description: `\`\`\`\n${evaled}\n\`\`\``,
 					timeout: 2500
