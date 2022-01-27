@@ -6,12 +6,29 @@ module.exports = {
 	aliases: ["execute"],
 	execute(message, args) {
 		const code = args.join(" ");
+		const isPromise = v => typeof v === "object" && typeof v.then === "function";
 		try {
-			const out = eval(code);
-			if (!code.includes("message.edit(") && !code.includes("Messages.")) Messages.textCompleted(message, "Completed!", {description: `${out ? `\`\`\`${out.toString()}\`\`\`` : "`No out ¯\\_(ツ)_/¯`"}`, timeout: 2500});
-
+			const evaled = eval(code);
+			if (isPromise(evaled)) {
+				evaled.then(r => {
+					Messages.textCompleted(message, "Promise resolved!", {
+						description: `\`\`\`\n${r}\n\`\`\``,
+						timeout: 2500
+					});
+				}).catch(e => {
+					Messages.textError(message, "Promise rejected!", {
+						description: `\`\`\`\n${e}\n\`\`\``,
+						timeout: 2500
+					});
+				});
+			} else {
+				Messages.textCompleted(message, "Eval successful!", {
+					description: `\`\`\`\n${evaled}\n\`\`\``,
+					timeout: 2500
+				});
+			}
 		} catch (e) {
-			Messages.textError(message, "Error in eval!", {description: `\`\`\`${e}\`\`\``, timeout: 2500});
+			Messages.textError(message, "Eval error!", {description: `\`\`\`${e}\`\`\``, timeout: 2500});
 		}
 	}
 }
