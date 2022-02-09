@@ -31,11 +31,13 @@ module.exports = {
 		if (action === "add") {
 			if (!interaction) return Messages.error(message, "No such interaction found!", {timeout: 2500});
 			if (interactionsList.includes(interactionName)) return Messages.error(message, "Interaction already added!", {timeout: 2500});
-			try {
-				interaction.start(message);
-			} catch (e) {
-				console.error(e);
-				return Messages.error(message, "Interaction failed to start!", {timeout: 2500});
+			if (interaction.type === "regular") {
+				try {
+					interaction.start(message);
+				} catch (e) {
+					console.error(e);
+					return Messages.error(message, "Interaction failed to start!", {timeout: 2500});
+				}
 			}
 			interactionsList.push(interactionName);
 			userInteractions.set(user.id, interactionsList);
@@ -46,17 +48,25 @@ module.exports = {
 			if (interactionName === "all") {
 				interactionsList.forEach(i => {
 					const interaction = interactions.get(i);
-					interaction.stop(message);
+					if (interaction.type === "regular") {
+						try {
+							interaction.stop(message);
+						} catch (e) {
+							console.error(e);
+						}
+					}
 				});
 				userInteractions.delete(user.id);
 				return Messages.completed(message, `Removed all interactions for ${user.tag}`, {timeout: 2500});
 			}
 			if (!interactionsList.includes(interactionName)) return Messages.error(message, "Interaction not found!", {timeout: 2500});
-			try {
-				interaction.stop(message);
-			} catch (e) {
-				console.error(e);
-				return Messages.error(message, "Interaction failed to stop!", {timeout: 2500});
+			if (interaction.type === "regular") {
+				try {
+					interaction.stop(message);
+				} catch (e) {
+					console.error(e);
+					Messages.error(message, "Interaction failed to stop!", {timeout: 2500});
+				}
 			}
 			interactionsList.splice(interactionsList.indexOf(interactionName), 1);
 			userInteractions.set(user.id, interactionsList);
