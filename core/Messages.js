@@ -2,7 +2,7 @@ const MessageEmbed = require("../modules/MessageEmbed.js");
 const axios = require("axios");
 
 function inlineReply(message, content, options) {
-	axios.post(`https://discord.com/api/v9/channels/${message.channel.id}/messages`, {
+	return axios.post(`https://discord.com/api/v9/channels/${message.channel.id}/messages`, {
 		content: content,
 		nonce: Math.round(Math.random()*10000000000),
 		tts: false,
@@ -12,7 +12,7 @@ function inlineReply(message, content, options) {
 		}
 	}, {
 		headers: {authorization: message.client.token}
-	}).then(r => {}).catch(e => {});
+	});
 }
 
 module.exports = {
@@ -66,10 +66,10 @@ module.exports = {
 		const embed = new MessageEmbed().setColor("#5926ff");
 		options?.big ? embed.setTitle(text) : embed.setDescription(text);
 		if (options?.callback) return options.callback(embed.uri);
-		inlineReply(message, embed.uri, options);
+		inlineReply(message, embed.uri, options).catch();
 	},
 	textReply(message, text, options) {
 		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
-		inlineReply(message, options?.big ? "**"+text+"**" : text, options);
+		inlineReply(message, options?.big ? "**"+text+"**" : text, options).catch();
 	}
 }
