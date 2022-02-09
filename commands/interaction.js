@@ -5,42 +5,63 @@ module.exports = {
 	args: true,
 	aliases: ["ui"],
 	async execute(message, args) {
-		const {client} = message;
+		const {client, client: {interactions, userInteractions}} = message;
 
-		if (!args[0] || !parseInt(args[0])) return Messages.error(message, "Invalid arguments (USER_ID)!", {timeout: 2500});
-		if (!["add", "remove", "list"].includes(args[1])) return Messages.error(message, "Invalid arguments (add/remove/list)!", {timeout: 2500});
-		if ((!args[2]) && args[0] != "list") return Messages.error(message, "Invalid arguments (INTERACTION_NAME)!", {timeout: 2500});
+		// Interaction has start and stop methods that requires message as parameter.
+		// Example: >interaction [USER_ID] [add|remove|list] [interaction_name]
 		
-		const user = message.mentions.users.first() || message.client.users.find(u => u.id == args[0]);
+		const user = message.mentions.users.first() || client.users.find(u => u.id == args[0]);
+		const action = args[1];
+		const interactionName = args.slice(2).join(" ");
+
 		if (!user) return Messages.error(message, "No such user!", {timeout: 2500});
-		if (user.bot) return Messages.error(message, "Bots can't have interactions!", {timeout: 2500});
+		if (user.bot || user.id === client.id) return Messages.error(message, "You can't add interactions to yourself or bots!", {timeout: 2500});
+		if (!["add", "remove", "list"].includes(action)) return Messages.error(message, "Invalid action!", {timeout: 2500});
 
-		let interactions = client.userInteractions.get(user.id);
-		if (!interactions) interactions = [];
+		const interactionsList = userInteractions.get(user.id) || [];
 
-		if (args[1] == "add") {
-			if (!client.interactions.has(args[2])) return Messages.error(message, "No such interaction!", {timeout: 2500});
-			if (interactions.includes(args[2])) return Messages.warning(message, "Interaction already exists!", {timeout: 2500});
-			interactions.push(args[2]);
-			client.userInteractions.set(user.id, interactions);
-			return Messages.completed(message, "Added interaction!", {timeout: 2500});
+		if (action === "list") {
+			if (!interactions) return Messages.error(message, "No interactions found!", {timeout: 2500});
+			return Messages.completed(message, `Interactions for ${user.tag}: ${interactionsList.join(", ")}`);
 		}
-		if (args[1] == "remove") {
-			if (!client.interactions.has(args[2]) && args[2] != "all") return Messages.error(message, "No such interaction!", {timeout: 2500});
-			if (args[2] == "all") {
-				if (interactions.length == 0) return Messages.warning(message, "User has no interactions!", {timeout: 2500});
-				client.userInteractions.set(user.id, []);
-				return Messages.completed(message, "Removed all interactions!", {timeout: 2500});
+
+		if (!interactionName) return Messages.error(message, "Interaction name required!", {timeout: 2500});
+		const interaction = interactions.get(interactionName);
+
+		if (action === "add") {
+			if (!interaction) return Messages.error(message, "No such interaction found!", {timeout: 2500});
+			if (interactionsList.includes(interactionName)) return Messages.error(message, "Interaction already added!", {timeout: 2500});
+			try {
+				interaction.start(message);
+			} catch (e) {
+				console.error(e);
+				return Messages.error(message, "Interaction failed to start!", {timeout: 2500});
 			}
-			if (!interactions.includes(args[2])) return Messages.warning(message, "Interaction does not exist!", {timeout: 2500});
-			interactions.splice(interactions.indexOf(args[2]), 1);
-			client.userInteractions.set(user.id, interactions);
-			return Messages.completed(message, "Removed interaction!", {timeout: 2500});
+			interactionsList.push(interactionName);
+			userInteractions.set(user.id, interactionsList);
+			return Messages.completed(message, `Added interaction ${interactionName} to ${user.tag}`, {timeout: 2500});
 		}
-		if (args[1] == "list") {
-			if (interactions.length == 0) return Messages.warning(message, "No interactions!", {timeout: 2500});
-			return Messages.completed(message, "Interactions:", {description: interactions.join(", "), timeout: 2500});
+
+		if (action === "remove") {
+			if (interactionName === "all") {
+				interactionsList.forEach(i => {
+					const interaction = interactions.get(i);
+					interaction.stop(message);
+				});
+				userInteractions.delete(user.id);
+				return Messages.completed(message, `Removed all interactions for ${user.tag}`, {timeout: 2500});
+			}
+			if (!interactionsList.includes(interactionName)) return Messages.error(message, "Interaction not found!", {timeout: 2500});
+			try {
+				interaction.stop(message);
+			} catch (e) {
+				console.error(e);
+				return Messages.error(message, "Interaction failed to stop!", {timeout: 2500});
+			}
+			interactionsList.splice(interactionsList.indexOf(interactionName), 1);
+			userInteractions.set(user.id, interactionsList);
+			return Messages.completed(message, `Removed interaction ${interactionName} from ${user.tag}`, {timeout: 2500});
 		}
-		
+
 	}
 }

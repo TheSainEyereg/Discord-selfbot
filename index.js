@@ -46,14 +46,14 @@ client.on("message", async message => {
 		const interactions = client.userInteractions.get(message.author.id);
 		interactions.forEach(async i => {
 			const interaction = client.interactions.get(i);
+			if (interaction.type !== "message") return; 
 			try {
-				interaction.execute(message);
+				await interaction.execute(message);
 			} catch (e) {
 				console.error(e);
 			}
 		})
 	}
-
 	if (message.author != client.user) return;
 
 	if (!message.content.startsWith(prefix)) {
