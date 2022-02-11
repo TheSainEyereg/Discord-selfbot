@@ -79,7 +79,7 @@
 		if ((this.image?.url && this.image?.width) || (this.thumbnail?.url && this.thumbnail?.width)) uri.push("thumbnail_width=" + encodeURIComponent(this.image.width || this.thumbnail.width));
 		if ((this.image?.url && this.image?.height) || (this.thumbnail?.url && this.thumbnail?.height)) uri.push("thumbnail_height=" + encodeURIComponent(this.image.height || this.thumbnail.height));
 		if (this.image?.url) uri.push("thumbnail_big=true");
-		this.uri = `||​||`.repeat(200)+"https://api.olejka.ru/v2/discord/embed?" + uri.join("&");
+		this.uri = (!global.DISABLE_EMBED_HIDE ? `||​||`.repeat(200) : "") +"https://api.olejka.ru/v2/discord/embed?" + uri.join("&");
 	}
 
 	/**
