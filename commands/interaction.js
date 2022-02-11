@@ -33,7 +33,7 @@ module.exports = {
 			if (interactionsList.includes(interactionName)) return Messages.error(message, "Interaction already added!", {timeout: 2500});
 			if (interaction.type === "regular") {
 				try {
-					interaction.start(message);
+					interaction.start(message, user);
 				} catch (e) {
 					console.error(e);
 					return Messages.error(message, "Interaction failed to start!", {timeout: 2500});
@@ -50,7 +50,7 @@ module.exports = {
 					const interaction = interactions.get(i);
 					if (interaction.type === "regular") {
 						try {
-							interaction.stop(message);
+							interaction.stop(message, user);
 						} catch (e) {
 							console.error(e);
 						}
@@ -62,7 +62,7 @@ module.exports = {
 			if (!interactionsList.includes(interactionName)) return Messages.error(message, "Interaction not found!", {timeout: 2500});
 			if (interaction.type === "regular") {
 				try {
-					interaction.stop(message);
+					interaction.stop(message, user);
 				} catch (e) {
 					console.error(e);
 					Messages.error(message, "Interaction failed to stop!", {timeout: 2500});

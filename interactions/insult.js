@@ -6,9 +6,9 @@ const {textReply} = require("../core/Messages");
 module.exports = {
 	name: "insult",
 	type: "message",
-	start(message) {},
-	stop(message) {},
-
+	
+	start(message, user) {},
+	stop(message, user) {},
 
 	last50: [],
 	async getData() {
