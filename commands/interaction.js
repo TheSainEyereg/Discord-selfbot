@@ -15,7 +15,7 @@ module.exports = {
 		const interactionName = args.slice(2).join(" ");
 
 		if (!user) return Messages.error(message, "No such user!", {timeout: 2500});
-		if (user.bot || user.id === client.id) return Messages.error(message, "You can't add interactions to yourself or bots!", {timeout: 2500});
+		if (user.bot || user.id === client.user.id) return Messages.error(message, "You can't add interactions to yourself or bots!", {timeout: 2500});
 		if (!["add", "remove", "list"].includes(action)) return Messages.error(message, "Invalid action!", {timeout: 2500});
 
 		const interactionsList = userInteractions.get(user.id) || [];
