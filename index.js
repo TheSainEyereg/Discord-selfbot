@@ -1,11 +1,11 @@
 const fs = require("fs");
 const {Client, Collection} = require("discord.js");
-const {token, prefix} = require("./config.json") ;
+const {token, prefix, DISABLE_EMBED_HIDE} = require("./config.json") ;
 const client = new Client({ ws:{properties: {$browser: "Desktop"}}});
 
 const Messages = global.Messages = require("./core/Messages.js");
 const MessageEmbed = global.MessageEmbed = require("./modules/MessageEmbed.js");
-global.DISABLE_EMBED_HIDE = config.DISABLE_EMBED_HIDE;
+global.DISABLE_EMBED_HIDE = DISABLE_EMBED_HIDE;
 
 client.commands = new Collection();
 for (const file of fs.readdirSync(`./commands`)) {
