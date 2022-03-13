@@ -10,7 +10,7 @@ module.exports = {
 			Messages.textRegular(message, `\`\`\`${res.data}\`\`\``);
 		})
 		.catch(e => {
-			Messages.error(message, "Something went wrong!", {description: e, timeout: 2500});
+			Messages.textError(message, "Something went wrong!", {description: e, timeout: 2500});
 		});
 	}
 };
