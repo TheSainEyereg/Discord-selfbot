@@ -9,8 +9,8 @@ git clone https://github.com/TheSainEyereg/Discord-selfbot.git
 cd Discord-selfbot
 npm i
 ```
-3. **Go to `node_modules/discord.js/src/client/ClientDataManager.js` and comment line 81**
-4. Create `config.json` like this: 
+1. **Copy files from `.djs11_fix/` to `node_modules/discord.js/src/client/` with replace!**
+2. Create `config.json` like this: 
 ```json
 {
 	"token": "YourAccountToken",
