@@ -1,7 +1,7 @@
 const fs = require("fs");
 const {Client, Collection} = require("discord.js");
 const {token, prefix, DISABLE_EMBED_HIDE} = require("./config.json") ;
-const client = new Client({ ws:{properties: {$browser: "Desktop"}}});
+const client = new Client({ ws:{properties: {$browser: "Discord iOS"}}});
 
 const Messages = global.Messages = require("./core/Messages.js");
 const MessageEmbed = global.MessageEmbed = require("./modules/MessageEmbed.js");
