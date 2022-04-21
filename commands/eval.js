@@ -7,7 +7,7 @@ module.exports = {
 	execute(message, args) {
 		const code = args.join(" ");
 		const isPromise = v => typeof v === "object" && typeof v.then === "function";
-		const dontSend = code.includes("message.channel.send(") || code.includes("message.edit(") || code.includes("message.delete(") || code.includes("Messsages.")
+		const dontSend = code.includes("message.edit(") || code.includes("message.delete(") || code.includes("Messages.")
 		try {
 			const evaled = eval(code);
 			if (isPromise(evaled)) {
