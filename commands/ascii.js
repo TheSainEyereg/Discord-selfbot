@@ -5,12 +5,13 @@ module.exports = {
 	name: "ascii",
 	args: true,
 	execute(message, args) {
-		axios.get(`https://artii.herokuapp.com/make?text=${args.join(" ")}`)
+		axios.get(`https://api.olejka.ru/v2/figlet?text=${args.join(" ")}`)
 		.then(res => {
-			Messages.textRegular(message, `\`\`\`${res.data}\`\`\``);
+			Messages.textRegular(message, `\`\`\`\n${res.data.text}\`\`\``);
 		})
 		.catch(e => {
-			Messages.textError(message, "Something went wrong!", {description: e, timeout: 2500});
+			Logs.critical(`${this.name} command`, `Error in ascii convertation: ${e}`);
+			return Messages.textError(message, `${l.error}: \`\`\`${e.response?.data?.error || e}\`\`\``);
 		});
 	}
 };
