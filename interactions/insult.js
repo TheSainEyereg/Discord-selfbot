@@ -30,7 +30,7 @@ module.exports = {
 		const delay = ms => new Promise(res => setTimeout(res, ms));
 		if (this.typing) return;
 
-		message.channel.startTyping();
+		message.channel.sendTyping();
 		this.typing = true;
 
 		if (!this.phases || new Date().getTime() - this.getTimestamp > 5 * 60 * 1000) {
@@ -47,8 +47,7 @@ module.exports = {
 		this.last50.push(insult);
 
 		await delay(insult.length * Math.floor(Math.random() * 50 + 50));
-		message.channel.stopTyping();
 		this.typing = false;
-		textReply(message, insult);
+		message.reply(insult);
 	}
 };

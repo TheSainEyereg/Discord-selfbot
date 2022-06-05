@@ -1,5 +1,5 @@
 const fs = require("fs");
-const {Client, Collection} = require("discord.js");
+const {Client, Collection} = require("discord.js-selfbot-v13");
 const {token, prefix, DISABLE_EMBED_HIDE} = require("./config.json") ;
 const client = new Client({ ws:{properties: {$browser: "Discord iOS"}}});
 
@@ -31,10 +31,11 @@ process.on("unhandledRejection", e => console.error(e));
 client.on("error", e => console.error(`Another error: ${e}`));
 client.on("warn", e => console.warn(`Warning: ${e}`));
 
-client.on("ready", _ => console.log("Connected to WebSocket!"));
-client.on("disconnect", _ => console.log("Looks like connection to WebSocket was lost, I will reconnect immediately when coonection appears."));
-client.on("reconnecting", _ => console.log("Im reconnecting to WebSocket now..."));
-client.on("resume", _ => console.log("Reconnected to WebSocket!"));
+client.on("shardReady", _ => console.log("Connected to WebSocket!"));
+client.on("shardDisconnect", _ => console.log("Looks like connection to WebSocket was lost, I will reconnect immediately when coonection appears."));
+client.on("shardReconnecting", _ => console.log("Im reconnecting to WebSocket now..."));
+client.on("shardResume", _ => console.log("Reconnected to WebSocket!"));
+client.on("shardError", e => console.log("WebSocket error:", e));
 
 client.once("ready", _ => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -42,7 +43,7 @@ client.once("ready", _ => {
   //client.user.setActivity("JS Development", {type: "STREAMING",url: "https://www.twitch.tv/pornhub"});
 });
 
-client.on("message", async message => {
+client.on("messageCreate", async message => {
 	if (client.userInteractions.has(message.author.id)) {
 		const interactions = client.userInteractions.get(message.author.id);
 		interactions.forEach(async i => {

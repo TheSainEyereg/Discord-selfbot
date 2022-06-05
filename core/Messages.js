@@ -1,20 +1,6 @@
 const MessageEmbed = require("../modules/MessageEmbed.js");
 const axios = require("axios");
 
-function inlineReply(message, content, options) {
-	return axios.post(`https://discord.com/api/v9/channels/${message.channel.id}/messages`, {
-		content: content,
-		nonce: Math.round(Math.random()*10000000000),
-		tts: false,
-		message_reference: {
-			channel_id: message.channel.id,
-			message_id: options?.messageId || message.id
-		}
-	}, {
-		headers: {authorization: message.client.token}
-	});
-}
-
 module.exports = {
 	regular(message, text, options) {
 		const embed = new MessageEmbed().setColor("#5926ff");
@@ -60,16 +46,5 @@ module.exports = {
 	textError(message, text, options) {
 		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
 		return message.edit(`${options?.color ? ":red_circle:" : ":x:"} **${text}** ${options?.description ? "\n"+options.description : ""}`).catch();
-	},
-
-	reply(message, text, options) {
-		const embed = new MessageEmbed().setColor("#5926ff");
-		options?.big ? embed.setTitle(text) : embed.setDescription(text);
-		if (options?.callback) return options.callback(embed.uri);
-		inlineReply(message, embed.uri, options).catch();
-	},
-	textReply(message, text, options) {
-		if (options?.timeout) setTimeout(_=>{message.delete().catch()}, options.timeout);
-		inlineReply(message, options?.big ? "**"+text+"**" : text, options).catch();
 	}
 }

@@ -5,7 +5,7 @@ const Messages = require("../core/Messages");
 module.exports = {
 	name: "coub",
 	execute(message, args) {
-		message.channel.startTyping();
+		message.channel.sendTyping();
 		
 		const communities = ["anime", "animals-pets", "blogging", "standup-jokes", "mashup", "movies", "gaming", "cartoons", "art", "live-pictures", "music", "news", "sports", "science-technology", "food-kitchen", "celebrity", "nature-travel", "fashion", "dance", "cars", "memes", /*"nsfw"*/];
 		const order = {
@@ -32,9 +32,7 @@ module.exports = {
 				const url = res.data.file_versions.share.default;
 				const link = `https://coub.com/view/${res.data.permalink}`;
 				if (!url || !link) return Messages.error(message, "Error in getting video!", {timeout: 2500});
-				message.edit(link).then(() => {
-					message.channel.stopTyping();
-				});
+				message.edit(link)
 			})
 			.catch(e => {
 				return Messages.error(message, "Error in fetching coub info!", {discription: `\`\`\`${e}\`\`\``, timeout: 2500});
