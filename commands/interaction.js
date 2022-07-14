@@ -10,7 +10,7 @@ module.exports = {
 		// Interaction has start and stop methods that requires message as parameter.
 		// Example: >interaction [USER_ID] [add|remove|list] [interaction_name]
 		
-		const user = message.mentions.users.first() || client.users.find(u => u.id == args[0]);
+		const user = message.mentions.users.first() || client.users.cache.find(u => u.id == args[0]);
 		const action = args[1];
 		const interactionName = args.slice(2).join(" ");
 
