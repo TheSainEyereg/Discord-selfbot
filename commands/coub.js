@@ -1,5 +1,4 @@
 const axios = require("axios");
-const { Attachment } = require("discord.js");
 const Messages = require("../core/Messages");
 
 module.exports = {

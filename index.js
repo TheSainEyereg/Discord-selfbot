@@ -1,7 +1,16 @@
 const fs = require("fs");
 const {Client, Collection} = require("discord.js-selfbot-v13");
 const {token, prefix, DISABLE_EMBED_HIDE} = require("./config.json") ;
-const client = new Client({ ws:{properties: {$browser: "Discord Android"}}});
+const client = new Client({
+	checkUpdate: false,
+	ws: {
+		properties: {
+			os: "Android",
+			browser: "Discord Android",
+			device: "alioth"
+		}
+	}
+});
 
 const Messages = global.Messages = require("./core/Messages.js");
 const MessageEmbed = global.MessageEmbed = require("./modules/MessageEmbed.js");
