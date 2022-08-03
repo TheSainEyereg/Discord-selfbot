@@ -28,6 +28,6 @@ module.exports = {
 		}
 
 		for (let i=0; i<5; i++) await editText();
-		message.delete().catch();
+		message.edit(args.join(" "));
 	}
 }
