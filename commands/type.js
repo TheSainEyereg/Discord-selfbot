@@ -8,6 +8,7 @@ module.exports = {
 		let out="";
 		for (const char of text) {
 			out+=char;
+			if (char === " ") continue;
 			message.edit(out).catch();
 			await delay(1200);
 		}
