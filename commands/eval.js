@@ -15,19 +15,19 @@ module.exports = {
 					if (dontSend) return;
 					Messages.textCompleted(message, "Promise resolved!", {
 						description: `\`\`\`\n${r}\n\`\`\``,
-						timeout: 2500
+						timeout: 4000
 					});
 				}).catch(e => {
 					Messages.textError(message, "Promise rejected!", {
 						description: `\`\`\`\n${e}\n\`\`\``,
-						timeout: 2500
+						timeout: 4000
 					});
 				});
 			} else {
 				if (dontSend) return;
 				Messages.textCompleted(message, "Eval successful!", {
 					description: `\`\`\`\n${evaled}\n\`\`\``,
-					timeout: 2500
+					timeout: 4000
 				});
 			}
 		} catch (e) {
