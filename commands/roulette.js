@@ -18,7 +18,6 @@ module.exports = {
 		if (!this.started) {
 			this.started = true;
 			this.current = Math.floor(Math.random()*6);
-			console.log("Selected: ", this.current);
 			return Messages.warning(message, "Game started!");
 		}
 

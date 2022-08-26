@@ -3,7 +3,7 @@ const axios = require("axios");
 
 module.exports = {
 	regular(message, text, options) {
-		const embed = new MessageEmbed().setColor(options.color || "#5926ff");
+		const embed = new MessageEmbed().setColor(options?.color || "#5926ff");
 		options?.big ? embed.setTitle(text) : embed.setDescription(text);
 		if (options?.timeout && !options?.callback) setTimeout(_=>{message.delete().catch()}, options.timeout);
 		if (options?.callback) return options.callback(embed.uri);
