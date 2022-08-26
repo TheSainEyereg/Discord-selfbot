@@ -4,7 +4,7 @@
   "description": "My selfbot XD",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/TheSainEyereg/Discord-selfbot#readme",
   "dependencies": {
-    "axios": "^0.21.1",
-    "discord.js-selfbot-v13": "^2.4.7",
+    "axios": "^0.27.2",
+    "discord.js-selfbot-v13": "^2.6.7",
     "form-data": "^4.0.0"
   }
 }
