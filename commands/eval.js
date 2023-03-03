@@ -5,7 +5,7 @@ module.exports = {
 	args: true,
 	aliases: ["execute"],
 	execute(message, args) {
-		const code = args.join(" ");
+		const code = args.join(" ").replace(/```([a-z0-9]+\n)?(.*?)```/gs, "$2");
 		const isPromise = v => typeof v === "object" && typeof v.then === "function";
 		const dontSend = code.includes("message.edit(") || code.includes("message.delete(") || code.includes("Messages.")
 		try {
